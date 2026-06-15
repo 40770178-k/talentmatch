@@ -30,3 +30,17 @@ class CandidateProfileSerializer(serializers.ModelSerializer):
             "skills",
             "skill_ids",
         ]
+
+from users.models import CandidateProfile, Skill, RecruiterProfile
+
+
+class RecruiterProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecruiterProfile
+        fields = [
+            "id",
+            "company_name",
+            "company_website",
+            "company_description",
+            "company_location",
+        ]
