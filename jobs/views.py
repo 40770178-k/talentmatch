@@ -1,12 +1,16 @@
 from rest_framework import generics, permissions
-from rest_framework.exceptions import PermissionDenied
+from users.permissions import IsRecruiter
 from .models import Job
 from .serializers import JobSerializer
 
 
 class JobListCreateView(generics.ListCreateAPIView):
     serializer_class = JobSerializer
-    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [permissions.IsAuthenticated(), IsRecruiter()]
+        return [permissions.IsAuthenticated()]
 
     def get_queryset(self):
         user = self.request.user
@@ -17,16 +21,16 @@ class JobListCreateView(generics.ListCreateAPIView):
         return Job.objects.filter(status="open")
 
     def perform_create(self, serializer):
-        if self.request.user.role != "recruiter":
-            raise PermissionDenied(
-                "Only recruiters can post jobs."
-            )
         serializer.save(recruiter=self.request.user)
 
 
 class JobDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = JobSerializer
-    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.request.method in ["PUT", "PATCH"]:
+            return [permissions.IsAuthenticated(), IsRecruiter()]
+        return [permissions.IsAuthenticated()]
 
     def get_queryset(self):
         user = self.request.user
