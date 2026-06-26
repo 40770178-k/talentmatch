@@ -23,6 +23,7 @@ urlpatterns = [
     path("api/candidates/", include("candidates.urls")),
     path("api/jobs/", include("jobs.urls")),
     path("api/applications/", include("applications.urls")),
+    path("api/resumes/", include("resumes.urls")),
 ]
 
 from django.conf import settings
