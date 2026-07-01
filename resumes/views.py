@@ -3,7 +3,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from users.permissions import IsCandidate
 from .models import Resume
 from .serializers import ResumeSerializer
-
+from .tasks import parse_resume
 
 class ResumeListCreateView(generics.ListCreateAPIView):
     serializer_class = ResumeSerializer
@@ -17,14 +17,18 @@ class ResumeListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Resume.objects.filter(candidate=self.request.user)
 
+
+
+
     def perform_create(self, serializer):
-        # Deactivate previous resumes before saving the new one
         Resume.objects.filter(
             candidate=self.request.user,
             is_active=True
         ).update(is_active=False)
 
-        serializer.save(
-            candidate=self.request.user,
-            original_filename=self.request.data.get("file").name,
+        resume = serializer.save(
+             candidate=self.request.user,
+             original_filename=self.request.data.get("file").name,
         )
+
+        parse_resume.delay(resume.id)
