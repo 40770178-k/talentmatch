@@ -10,6 +10,7 @@ class Resume(models.Model):
     )
     file = models.FileField(upload_to="resumes/")
     original_filename = models.CharField(max_length=255, blank=True)
+    extracted_text = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
