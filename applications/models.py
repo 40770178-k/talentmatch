@@ -28,6 +28,8 @@ class Application(models.Model):
         choices=STATUS_CHOICES,
         default="pending"
     )
+    match_score = models.FloatField(null=True, blank=True)
+    match_details = models.JSONField(null=True, blank=True)
     applied_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
