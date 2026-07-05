@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from users.permissions import IsRecruiter, IsCandidate
 from .models import Application
+from .tasks import calculate_match_score
 from .serializers import (
     ApplicationCreateSerializer,
     ApplicationSerializer,
@@ -27,8 +28,11 @@ class ApplicationListCreateView(generics.ListCreateAPIView):
 
         return Application.objects.filter(candidate=user)
 
+
+
     def perform_create(self, serializer):
-        serializer.save(candidate=self.request.user)
+        application = serializer.save(candidate=self.request.user)
+        calculate_match_score.delay(application.id)
 
 
 class ApplicationStatusUpdateView(generics.RetrieveUpdateAPIView):
