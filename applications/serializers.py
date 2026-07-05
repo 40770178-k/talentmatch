@@ -21,6 +21,8 @@ class ApplicationSerializer(serializers.ModelSerializer):
             "job",
             "job_title",
             "status",
+            "match_score",
+            "match_details",
             "applied_at",
         ]
         read_only_fields = ["candidate", "job", "applied_at"]
