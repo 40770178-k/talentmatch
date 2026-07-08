@@ -24,6 +24,7 @@ urlpatterns = [
     path("api/jobs/", include("jobs.urls")),
     path("api/applications/", include("applications.urls")),
     path("api/resumes/", include("resumes.urls")),
+    path("api/", include("users.urls")),
 ]
 
 from django.conf import settings
