@@ -1,5 +1,17 @@
-venv/
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+
+# Virtual environment
+venv/
 .env
+
+# Django
+db.sqlite3
+
+# Node
+node_modules/
+dist/
+
+# VS Code
 .vscode/
