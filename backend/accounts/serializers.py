@@ -28,3 +28,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
         )
 
         return user
+    
+
+def validate_password(self, value):
+    if len(value) < 8:
+        raise serializers.ValidationError(
+            "Password must be at least 8 characters."
+        )
+    if value.isdigit():
+        raise serializers.ValidationError(
+            "Password cannot be entirely numeric."
+        )
+    return value
