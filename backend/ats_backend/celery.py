@@ -3,7 +3,7 @@ from celery import Celery
 
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE",
-    "ats_backend.settings"
+    "ats_backend.settings.development"
 )
 
 app = Celery("ats_backend")
